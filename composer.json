@@ -1,0 +1,17 @@
+{
+    "name": "fadyandrawes/cache_profiler",
+    "description": "Cache profiler is an interface to manage and visualize cache systems",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Fadyandrawes\\CacheProfiler\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Fady Gendy",
+            "email": "fadyelgendy2017@gmail.com"
+        }
+    ],
+    "require": {}
+}
