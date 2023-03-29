@@ -16,6 +16,12 @@ html, body {
     gap: 20px;
 }
 
+.content {
+    min-width: 95%;
+    width: 90%;
+    margin: auto;
+}
+
 .title {
     text-transform: uppercase;
 }
@@ -52,4 +58,19 @@ img {
 
     width: 250px;
     height: 100px;
+}
+
+table, table th, table td {
+    border: 1px solid #d5d5d5;
+    border-collapse: collapse;
+    padding: 10px;
+}
+
+table thead {
+    background-color: #d5d5d5;
+}
+
+table tr:hover {
+    background-color: #d5d5d5;
+    cursor: pointer;
 }
