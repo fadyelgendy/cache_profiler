@@ -4,6 +4,7 @@ namespace Fadyandrawes\CacheProfiler\CacheStrategies;
 
 use Fadyandrawes\CacheProfiler\CacheStrategies\CacheInterface;
 use Fadyandrawes\CacheProfiler\Enums\CacheDriverEnum;
+use Fadyandrawes\CacheProfiler\Enums\OSEnum;
 use Fadyandrawes\CacheProfiler\View;
 use Throwable;
 
@@ -26,7 +27,7 @@ class RedisCache extends View implements CacheInterface
     {
         try {
             $this->redis = new \Redis();
-    
+
             $this->redis->connect(
                 $this->host,
                 $this->port,
@@ -40,10 +41,58 @@ class RedisCache extends View implements CacheInterface
             return "ERROR: " . $ex->getMessage() . ". Check your Redis server status!";
         }
 
-        if ($this->redis) {
-            return $this->render(['title' => CacheDriverEnum::REDIS->value, 'info' => $this->redis->info()]);
-        } else {
-            return "ERROR: Connection Failed!";
+        return ($this->redis) ? $this->data() : "ERROR: Connection Failed!";
+    }
+
+    public function data()
+    {
+        $info = $this->redis->info();
+
+        $os = OSEnum::LINUX->value;
+
+        if (str_starts_with($info['os'], 'WIN')) {
+            $os = OSEnum::WINDOWS;
         }
+
+        if (str_starts_with($info['os'], 'darwin')) {
+            $os = OSEnum::OSX;
+        }
+
+        $data['server']['version'] = $info['redis_version'];
+        $data['server']['mode'] = $info['redis_mode'];
+        $data['server']['os'] = $os;
+        $data['server']['port'] = $info['tcp_port'];
+        $data['server']['uptime_minutes'] = $info['uptime_in_seconds'] / 60;
+        $data['server']['uptime_days'] = $info['uptime_in_days'] / 60;
+        $data['server']['clusters_enabled'] = $info['cluster_enabled'];
+
+        $data['server']['role'] = $info['role'];
+        $data['server']['slaves'] = $info['connected_slaves'];
+
+        $data['paths']['bin'] = $info['executable'];
+        $data['paths']['config'] = $info['config_file'];
+
+        $data['memory']['used'] = $info['used_memory_human'];
+        $data['memory']['rss'] = $info['used_memory_rss_human'];
+        $data['memory']['peak'] = $info['used_memory_peak_human'];
+        $data['memory']['overhead'] = $info['used_memory_overhead'];
+        $data['memory']['startup'] = $info['used_memory_startup'];
+        $data['memory']['system'] = $info['total_system_memory_human'];
+        $data['memory']['lua'] = $info['used_memory_lua_human'];
+        $data['memory']['scripts'] = $info['used_memory_scripts_human'];
+        $data['memory']['max'] = $info['maxmemory_human'];
+        $data['memory']['policy'] = $info['maxmemory_policy'];
+
+        $data['cpu']['sys'] = $info['used_cpu_sys'];
+        $data['cpu']['sys_children'] = $info['used_cpu_sys_children'];
+        $data['cpu']['user'] = $info['used_cpu_user'];
+        $data['cpu']['user_children'] = $info['used_cpu_user_children'];
+
+        $data['databases'][] = $info['db0'];
+
+        return $this->render([
+            'title' => CacheDriverEnum::REDIS->value,
+            'data' => $data
+        ]);
     }
 }

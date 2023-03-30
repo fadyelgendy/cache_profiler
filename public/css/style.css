@@ -5,7 +5,8 @@
     margin: 0;
 }
 
-html, body {
+html,
+body {
     padding: 0;
     margin: 0;
 }
@@ -21,6 +22,7 @@ a {
     align-items: center;
     justify-content: center;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .content {
@@ -67,7 +69,18 @@ img {
     height: 100px;
 }
 
-table, table th, table td {
+.table_responsive {
+    max-width: 100%;
+    overflow-x: scroll;
+}
+
+table {
+    width: 100%;
+}
+
+table,
+table th,
+table td {
     border: 1px solid #d5d5d5;
     border-collapse: collapse;
     padding: 10px;
@@ -92,7 +105,8 @@ form div {
     width: 100%;
 }
 
-form select, form input {
+form select,
+form input {
     display: block;
     width: 100%;
     padding: 0.3rem 0.2rem;
@@ -140,4 +154,9 @@ h3 {
     align-items: center;
     justify-content: center;
     font-size: 5rem;
+}
+
+.info_container>.info_item {
+    padding: 0.3rem;
+    margin-bottom: 0.8rem;
 }
