@@ -1,11 +1,18 @@
 * {
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
 }
 
 html, body {
     padding: 0;
     margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .container {
@@ -73,4 +80,64 @@ table thead {
 table tr:hover {
     background-color: #d5d5d5;
     cursor: pointer;
+}
+
+form {
+    padding: 0.5rem;
+    max-width: 60vw;
+}
+
+form div {
+    margin: 10px 0;
+    width: 100%;
+}
+
+form select, form input {
+    display: block;
+    width: 100%;
+    padding: 0.3rem 0.2rem;
+}
+
+form button {
+    display: block;
+    width: 100%;
+    padding: 0.3rem 1rem;
+    border: 1px solid #b8b6b6;
+    border-radius: 0.2rem;
+}
+
+h3 {
+    padding: 0.5rem;
+}
+
+.error {
+    font-size: 12px;
+    margin: 5px 0.5rem;
+    color: red;
+}
+
+.section_heading {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px dashed #7e7c7c;
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
+}
+
+.section_heading a {
+    display: block;
+    border: 1px solid #b6b6b6;
+    padding: 0.2rem 1rem;
+    border-radius: 0.2rem;
+}
+
+.comming {
+    color: #7e7c7c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
 }

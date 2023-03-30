@@ -5,6 +5,7 @@ namespace Fadyandrawes\CacheProfiler\CacheStrategies;
 use Fadyandrawes\CacheProfiler\CacheStrategies\CacheInterface;
 use Fadyandrawes\CacheProfiler\Enums\CacheDriverEnum;
 use Fadyandrawes\CacheProfiler\View;
+use Throwable;
 
 class RedisCache extends View implements CacheInterface
 {
@@ -23,17 +24,21 @@ class RedisCache extends View implements CacheInterface
 
     public function handle()
     {
-        $this->redis = new \Redis();
-
-        $this->redis->connect(
-            $this->host,
-            $this->port,
-            $this->time_out,
-            $this->reserved,
-            $this->retry_interval,
-            $this->read_timeout,
-            $this->options
-        );
+        try {
+            $this->redis = new \Redis();
+    
+            $this->redis->connect(
+                $this->host,
+                $this->port,
+                $this->time_out,
+                $this->reserved,
+                $this->retry_interval,
+                $this->read_timeout,
+                $this->options
+            );
+        } catch (Throwable $ex) {
+            return "ERROR: " . $ex->getMessage() . ". Check your Redis server status!";
+        }
 
         if ($this->redis) {
             return $this->render(['title' => CacheDriverEnum::REDIS->value, 'info' => $this->redis->info()]);

@@ -11,7 +11,10 @@
 
 <body>
     <div class="content">
-        <h1><?= $title; ?> Server info:</h1>
+        <div class="section_heading">
+            <h2><?= $title; ?> Server info:</h2>
+            <a href="/">Home</a>
+        </div>
 
         <table>
             <thead>
