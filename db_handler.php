@@ -16,6 +16,7 @@ if (empty($host) || !isset($host)) {
     $_SESSION['host'] = "Host is reqired";
 
     header("Location: handler.php?driver=" . $driver);
+    exit;
 } else {
     session_destroy();
 }
@@ -24,6 +25,7 @@ if (empty($port) || !isset($port)) {
     $_SESSION['port'] = "port is reqired";
 
     header("Location: handler.php?driver=" . $driver);
+    exit;
 } else {
     session_destroy();
 }

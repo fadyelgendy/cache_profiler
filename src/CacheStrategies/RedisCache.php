@@ -62,15 +62,13 @@ class RedisCache extends View implements CacheInterface
         $data['server']['mode'] = $info['redis_mode'];
         $data['server']['os'] = $os;
         $data['server']['port'] = $info['tcp_port'];
-        $data['server']['uptime_minutes'] = $info['uptime_in_seconds'] / 60;
+        $data['server']['uptime_minutes'] = round($info['uptime_in_seconds'] / 60);
         $data['server']['uptime_days'] = $info['uptime_in_days'] / 60;
         $data['server']['clusters_enabled'] = $info['cluster_enabled'];
-
+        $data['server']['architecture'] = $info['arch_bits'];
+        $data['server']['gcc_version'] = $info['gcc_version'];
         $data['server']['role'] = $info['role'];
         $data['server']['slaves'] = $info['connected_slaves'];
-
-        $data['paths']['bin'] = $info['executable'];
-        $data['paths']['config'] = $info['config_file'];
 
         $data['memory']['used'] = $info['used_memory_human'];
         $data['memory']['rss'] = $info['used_memory_rss_human'];
@@ -89,6 +87,9 @@ class RedisCache extends View implements CacheInterface
         $data['cpu']['user_children'] = $info['used_cpu_user_children'];
 
         $data['databases'][] = $info['db0'];
+
+        $data['configuration']['bin'] = $info['executable'];
+        $data['configuration']['config'] = $info['config_file'];
 
         return $this->render([
             'title' => CacheDriverEnum::REDIS->value,

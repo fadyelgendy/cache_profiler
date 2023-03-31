@@ -12,9 +12,9 @@ define('CACHE_DRIVER_PATH', "Fadyandrawes\\CacheProfiler\\CacheStrategies\\");
 // check for database first
 $db = new Database('cache');
 
-$driver = $_GET['driver'];
+$title = $_GET['driver'];
 
-$driver_settings = $db->get($driver);
+$driver_settings = $db->get($title);
 
 if (!$driver_settings) {
     ob_start();
