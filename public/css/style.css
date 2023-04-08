@@ -204,3 +204,13 @@ h4 {
     background-color: #dd392b !important;
     color: #FFFFFF !important;
 }
+
+.varnish {
+    background-color: #004B6B;
+    color: #FFFFFF;
+}
+
+.memcached {
+    background-color: #298D84;
+    color: #FFFFFF;
+}
