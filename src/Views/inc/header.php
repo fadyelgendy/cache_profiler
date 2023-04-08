@@ -11,7 +11,9 @@
 
 <body>
     <div class="content">
-        <div class="section_heading">
-            <h2><?= $title; ?> Server info:</h2>
+        <div class="section_heading <?= $title; ?>">
+            <h2>
+                <img src="../../../public/assets/<?= $title; ?>.png" alt="<?= $title; ?>">
+            </h2>
             <a href="/">Home</a>
         </div>
