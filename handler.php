@@ -2,25 +2,39 @@
 
 require __DIR__ . "/vendor/autoload.php";
 
+session_start();
+
 use Fadyandrawes\CacheProfiler\CacheStrategies\CacheContext;
-use Fadyandrawes\CacheProfiler\CacheStrategies\RedisCache;
-use Fadyandrawes\CacheProfiler\Enums\CacheDriverEnum;
+use Fadyandrawes\CacheProfiler\Database;
 
-$driver = $_GET['driver'];
+define('CACHE_DRIVER_PATH', "Fadyandrawes\\CacheProfiler\\CacheStrategies\\");
 
-$context = new CacheContext();
+// check for database first
+$db = new Database('cache');
 
-if ($driver == CacheDriverEnum::REDIS->value) {
-    $context->setStrategy(new RedisCache('127.0.0.1', 6379));
-} else if ($driver == CacheDriverEnum::MEMCACHED->value) {
-    echo 'MEMCACHED';
-    exit;
-} else if ($driver == CacheDriverEnum::VARNISH->value) {
-    echo 'VARNISH';
+$title = $_GET['driver'];
+
+$driver_settings = $db->get($title);
+
+if (!$driver_settings) {
+    ob_start();
+    include __DIR__ . "/src/Views/setup.php";
+    echo ob_get_clean();
     exit;
 } else {
-    echo 'ERROR: Driver Not Set!';
-    exit;
+    $target_class = CACHE_DRIVER_PATH .  ucwords($driver_settings->driver) . 'Cache';
+
+    if (class_exists($target_class)) {
+        $context = new CacheContext();
+        $context->setStrategy(new $target_class($driver_settings->host, $driver_settings->port));
+
+        echo $context->executeStrategy();
+    } else {
+        ob_start();
+        include __DIR__ . "/src/Views/comming.php";
+        echo ob_get_clean();
+        exit;
+    }
 }
 
-echo $context->executeStrategy();
+session_destroy();
