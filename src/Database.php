@@ -2,21 +2,25 @@
 
 namespace Fadyandrawes\CacheProfiler;
 
+use Fadyandrawes\CacheProfiler\DatabaseStrategies\DatabaseContext;
 use PDO;
 use PDORow;
 use Throwable;
 
 class Database
 {
-    private $pdo;
+    private PDO $pdo;
 
-    public function __construct(protected string $db_name)
+    public function __construct(protected string $driver, protected string $db_name)
     {
-        try {
-            $this->pdo = new PDO('sqlite:' . $db_name . '.db');
-        } catch (Throwable $ex) {
-            die('ERROR: ' . $ex->getMessage());
+        $databaseContext = new DatabaseContext();
+        $targetClass = "Fadyandrawes\\CacheProfiler\\DatabaseStrategies\\" .ucwords($driver);
+
+        if (! class_exists($targetClass)) {
+            die("ERROR: Database driver doesn't exist!");
         }
+
+        $this->pdo = $databaseContext->setStrategy(new $targetClass)->executeStratgy($db_name);
     }
 
     public function get(string $driver): bool|PDORow
@@ -88,7 +92,9 @@ class Database
             'driver' VARCHAR(255) NOT NULL,
             'host' VARCHAR(255) NOT NULL,
             'port' VARCHAR(255) NOT NULL,
-            'options' JSON NULLABLE
+            'username' VARCHAR(255) NULL,
+            'password' VARCHAR(255) NULL,
+            'options' JSON NULL
         )";
 
         $statement = $this->pdo->prepare($sql);

@@ -62,8 +62,8 @@ class RedisCache extends View implements CacheInterface
         $data['server']['mode'] = $info['redis_mode'];
         $data['server']['os'] = $os;
         $data['server']['port'] = $info['tcp_port'];
-        $data['server']['uptime_minutes'] = round($info['uptime_in_seconds'] / 60);
-        $data['server']['uptime_days'] = $info['uptime_in_days'] / 60;
+        $data['server']['uptime'] = formatTime($info['uptime_in_seconds']);
+        $data['server']['uptime_days'] = $info['uptime_in_days'];
         $data['server']['clusters_enabled'] = $info['cluster_enabled'];
         $data['server']['architecture'] = $info['arch_bits'];
         $data['server']['gcc_version'] = $info['gcc_version'];

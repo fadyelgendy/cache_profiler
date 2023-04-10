@@ -1,1 +1,1 @@
-<h1>Console</h1>
+<button onclick="window.location.reload();">Refresh</button>

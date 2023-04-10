@@ -94,7 +94,7 @@ form {
 }
 
 form div {
-    margin: 10px 0;
+    margin: 0.1rem 0;
     width: 100%;
 }
 
@@ -105,12 +105,20 @@ form input {
     padding: 0.3rem 0.2rem;
 }
 
+form input[type='checkbox'] {
+    width: auto;
+}
+
 form button {
     display: block;
     width: 100%;
     padding: 0.3rem 1rem;
     border: 1px solid #b8b6b6;
     border-radius: 0.2rem;
+}
+
+form label {
+    text-transform: capitalize;
 }
 
 h3 {
@@ -213,4 +221,19 @@ h4 {
 .memcached {
     background-color: #298D84;
     color: #FFFFFF;
+}
+
+.form-group {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    align-items: center;
+    justify-content: start;
+}
+
+.form-footer {
+    margin-top: 1rem;
+}
+
+#auth {
+    display: none;
 }

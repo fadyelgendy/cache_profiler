@@ -3,7 +3,7 @@
     <div class="info_item">
         <?php foreach ($value as $k => $v) : ?>
             <div class="item">
-                <h5><?= ucwords(str_ireplace('_', ' ', $k)); ?></h5>
+                <h5><?= formatKeys($k); ?></h5>
                 <p><?= $v; ?></p>
             </div>
         <?php endforeach; ?>

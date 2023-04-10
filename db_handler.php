@@ -1,6 +1,7 @@
 <?php
 
-include "./vendor/autoload.php";
+require __DIR__ ."/vendor/autoload.php";
+require __DIR__ . "/helpers.php";
 
 use Fadyandrawes\CacheProfiler\Database;
 
@@ -31,12 +32,14 @@ if (empty($port) || !isset($port)) {
 }
 
 // store data
-$db = new Database('cache');
-$saved = $db->save('drivers', [
+$db = new Database(env('db_driver'), env('db_name'));
+$data = [
     'driver' => trim($driver),
     'host' => trim($host),
     'port' => trim($port),
-]);
+];
+
+$saved = $db->save('drivers', $data);
 
 if (!$saved) {
     $_SESSION['driver'] = "Driver settings can not be saved. Please try again!";
