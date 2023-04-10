@@ -1,12 +1,13 @@
 <?php require __DIR__ . "/inc/header.php"; ?>
 
 <form action="db_handler.php" method="POST">
+    <input type="hidden" name="form_type" value="setup">
     <div class="form-group">
         <label for="driver">driver</label>
 
         <div>
             <?php if ($_SESSION['driver']) : ?>
-                <div class="error"><?= $_SESSION['driver']; ?></div>
+                <div class="alert alert-error"><?= $_SESSION['driver']; ?></div>
             <?php endif; ?>
 
             <select name="driver" id="driver">
@@ -47,7 +48,7 @@
         </div>
     </div>
 
-    <div id="auth">
+    <div id="auth" class="hidden">
         <div class="form-group">
             <label for="username">Username</label>
             <div>
@@ -71,24 +72,9 @@
 
     <div class="form-group form-footer">
         <div></div>
-        <button type="submit">Save</button>
+        <button type="submit" class="<?=$title;?>">Save</button>
     </div>
 
 </form>
-
-<script>
-    var hasAuth = document.getElementById('has_auth');
-    var authContainer = document.getElementById('auth');
-
-    hasAuth.addEventListener('change', function (event) {
-        var checked = this.checked;
-
-        if (checked === true) {
-            authContainer.style.display = 'block';
-        } else {
-            authContainer.style.display = 'none';
-        }
-    });
-</script>
 
 <?php require __DIR__ . "/inc/footer.php"; ?>

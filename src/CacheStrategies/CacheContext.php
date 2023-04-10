@@ -14,8 +14,8 @@ class CacheContext
     }
 
     // TODO: Add connection options
-    public function executeStrategy()
+    public function executeStrategy(array $request)
     {
-        return $this->cache->handle();
+        return $this->cache->handle($request);
     }
 }

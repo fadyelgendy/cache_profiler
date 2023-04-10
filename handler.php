@@ -7,7 +7,6 @@ session_start();
 
 use Fadyandrawes\CacheProfiler\CacheStrategies\CacheContext;
 use Fadyandrawes\CacheProfiler\Database;
-use Fadyandrawes\CacheProfiler\Enums\DatabaseDriverEnum;
 
 define('CACHE_DRIVER_PATH', "Fadyandrawes\\CacheProfiler\\CacheStrategies\\");
 
@@ -30,7 +29,7 @@ if (!$driver_settings) {
         $context = new CacheContext();
         $context->setStrategy(new $target_class($driver_settings->host, $driver_settings->port));
 
-        echo $context->executeStrategy();
+        echo $context->executeStrategy($_POST);
     } else {
         ob_start();
         include __DIR__ . "/src/Views/comming.php";

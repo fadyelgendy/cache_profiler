@@ -115,6 +115,7 @@ form button {
     padding: 0.3rem 1rem;
     border: 1px solid #b8b6b6;
     border-radius: 0.2rem;
+    cursor: pointer;
 }
 
 form label {
@@ -133,6 +134,14 @@ h4 {
     color: #dd392b;
 }
 
+h5 {
+    text-transform: uppercase;
+    width: 100%;
+    padding: 5px 10px;
+    background-color: #dd392b;
+    color: #FFFFFF;
+}
+
 .error {
     font-size: 12px;
     margin: 5px 0.5rem;
@@ -146,6 +155,7 @@ h4 {
     align-items: center;
     justify-content: space-between;
     text-transform: capitalize;
+    border-bottom: 1px solid #FFFFFF;
 }
 
 .section_heading img {
@@ -180,8 +190,22 @@ h4 {
     padding: 0.5rem;
 }
 
-.col-8 {
-    max-width: 70vw;
+.keys-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    padding: 0.2rem;
+}
+
+.keys-container > div {
+    border: 1px solid #b8b6b6;
+    display: flex;
+    align-items: center;
+    padding: 0.2rem;
+}
+
+.keys-container>div:last-child {
+    display: flex;
+    justify-content: space-between;
 }
 
 .col-4 {
@@ -234,6 +258,31 @@ h4 {
     margin-top: 1rem;
 }
 
-#auth {
+.hidden {
     display: none;
+}
+
+.console-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0.4rem;
+}
+
+.console-container>div {
+    border: 1px solid #dd392b;
+}
+
+.alert {
+    text-transform: uppercase;
+    width: 100%;
+    padding: 5px 10px;
+    color: #FFFFFF;
+}
+
+.alert-success {
+    background-color: #4ae63c;
+}
+
+.alert-error {
+    background-color: #cc1b38;
 }

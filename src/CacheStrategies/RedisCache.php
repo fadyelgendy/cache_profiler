@@ -23,7 +23,7 @@ class RedisCache extends View implements CacheInterface
     ) {
     }
 
-    public function handle()
+    public function handle(array $request)
     {
         try {
             $this->redis = new \Redis();
@@ -37,6 +37,10 @@ class RedisCache extends View implements CacheInterface
                 $this->read_timeout,
                 $this->options
             );
+
+            if (!empty($request) && $_SERVER['REQUEST_METHOD'] == 'POST') {
+                $this->handleRequest($request);
+            }
         } catch (Throwable $ex) {
             return "ERROR: " . $ex->getMessage() . ". Check your Redis server status!";
         }
@@ -44,7 +48,7 @@ class RedisCache extends View implements CacheInterface
         return ($this->redis) ? $this->data() : "ERROR: Connection Failed!";
     }
 
-    public function data()
+    public function data($extra = null)
     {
         $info = $this->redis->info();
 
@@ -93,7 +97,28 @@ class RedisCache extends View implements CacheInterface
 
         return $this->render([
             'title' => CacheDriverEnum::REDIS->value,
-            'data' => $data
+            'data' => $data,
+            'keys' => $this->redis->keys('*'),
+            'extra' => $extra
         ]);
+    }
+
+    public function handleRequest(array $request): void
+    {
+        if (array_key_exists('form_type', $request) && $request['form_type'] === 'store') {
+
+            // String
+            if (array_key_exists('data_type', $request) && $request['data_type'] === 'string') {
+                $key = trim($request['string_key']);
+                $value = trim($request['value']);
+                $expiry = trim($request['expiration']);
+
+                $this->redis->set($key, $value, $expiry);
+            }
+        }
+
+        $_SESSION['success'] =  'Success';
+
+        $this->data('Success');
     }
 }
