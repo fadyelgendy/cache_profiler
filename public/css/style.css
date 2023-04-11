@@ -274,9 +274,10 @@ h5 {
 
 .alert {
     text-transform: uppercase;
-    width: 100%;
+    width: 90%;
     padding: 5px 10px;
     color: #FFFFFF;
+    margin: 10px auto;
 }
 
 .alert-success {
@@ -285,4 +286,51 @@ h5 {
 
 .alert-error {
     background-color: #cc1b38;
+}
+
+.inline-form {
+    display: inline-block;
+}
+
+.inline-form button {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 2rem;
+}
+
+.actions button {
+    border: 1px solid #DDDDDD;
+    padding: 1rem 2rem;
+    min-width: 20%;
+    background: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary {
+    background-color: #03a9f4 !important;
+    color: #FFFFFF;
+}
+
+.danger {
+    background-color: #ff1b1b !important;
+    color: #FFFFFF;
+}
+
+.warning {
+    background-color: #ff0047 !important;
+    color: #FFFFFF;
+}
+
+.success {
+    background-color: #12a705 !important;
+    color: #FFFFFF;
 }

@@ -1,12 +1,6 @@
 <form action="handler.php?driver=<?= $title; ?>" method="POST">
     <input type="hidden" name="form_type" value="store">
 
-    <?php if ($_SESSION['success']) : ?>
-        <div class="alert alert-success">
-            <?= $_SESSION['success']; ?>
-        </div>
-    <?php endif; ?>
-
     <div class="form-group">
         <label for="data_type">Data Type</label>
         <select name="data_type" id="data_type">
@@ -55,7 +49,7 @@
         <label for="expiration">Expiration</label>
         <div>
             <input type="number" name="expiration" id="expiration" value="3600" min="0">
-            <small>in seconds default 1 minute</small>
+            <small>in seconds default 1 hour</small>
         </div>
     </div>
 

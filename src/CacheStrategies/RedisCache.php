@@ -4,6 +4,7 @@ namespace Fadyandrawes\CacheProfiler\CacheStrategies;
 
 use Fadyandrawes\CacheProfiler\CacheStrategies\CacheInterface;
 use Fadyandrawes\CacheProfiler\Enums\CacheDriverEnum;
+use Fadyandrawes\CacheProfiler\Enums\DatatypeEnum;
 use Fadyandrawes\CacheProfiler\Enums\OSEnum;
 use Fadyandrawes\CacheProfiler\View;
 use Throwable;
@@ -105,20 +106,84 @@ class RedisCache extends View implements CacheInterface
 
     public function handleRequest(array $request): void
     {
-        if (array_key_exists('form_type', $request) && $request['form_type'] === 'store') {
+        if (array_key_exists('form_type', $request)) {
+            if ($request['form_type'] === 'store') {
+                $result = $this->handleStore($request);
+            }
 
-            // String
-            if (array_key_exists('data_type', $request) && $request['data_type'] === 'string') {
-                $key = trim($request['string_key']);
-                $value = trim($request['value']);
-                $expiry = trim($request['expiration']);
-
-                $this->redis->set($key, $value, $expiry);
+            if ($request['form_type'] === 'destroy') {
+                $result = $this->handleDestroy($request);
             }
         }
 
-        $_SESSION['success'] =  'Success';
+        // Flash to sesion
+        $_SESSION[$result['status']] = $result['message'];
 
-        $this->data('Success');
+        $this->data($result);
+    }
+
+    protected function handleStore(array $request): array
+    {
+        if (array_key_exists('data_type', $request)) {
+            $value = trim($request['value']);
+
+            // String
+            if ($request['data_type'] == DatatypeEnum::STRING->value) {
+                $expiry = trim($request['expiration']);
+                $s_key = trim($request['string_key']);
+                $this->redis->set($s_key, $value, $expiry);
+            } else if ($request['data_type'] == DatatypeEnum::HASH->value) {
+                $hash = trim($request['hash']);
+                $h_key = trim($request['hash_key']);
+
+                if (!$this->redis->hExists($hash, $h_key)) {
+                    $this->redis->hSet($hash, $h_key, $value);
+                } else {
+                    return [
+                        'status' => 'failed',
+                        'message' => 'Key Already Exists!'
+                    ];
+                }
+            } else {
+                return [
+                    'status' => 'failed',
+                    'message' => 'Data type not supported!'
+                ];
+            }
+
+            return [
+                'status' => 'success',
+                'message' => 'Saved Successfully!'
+            ];
+        }
+
+        return [
+            'status' => 'failed',
+            'message' => 'No Data type procided!'
+        ];
+    }
+
+    protected function handleDestroy(array $request): array
+    {
+        if (array_key_exists('keys', $request)) {
+            if ($this->redis->exists(...$request['keys'])) {
+                $this->redis->del(...$request['keys']);
+
+                return [
+                    'status' => 'success',
+                    'message' => 'Deleted Successfully!'
+                ];
+            } else {
+                return [
+                    'status' => 'failed',
+                    'message' => 'Target key doesn\'t exists!'
+                ];
+            }
+        }
+
+        return [
+            'status' => 'failed',
+            'message' => 'No data sent in the request!'
+        ];
     }
 }
