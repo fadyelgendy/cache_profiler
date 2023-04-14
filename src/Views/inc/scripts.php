@@ -61,4 +61,31 @@
             }
         }
     }
+
+    // Modal
+    const modalButtons = document.querySelectorAll('.modal');
+
+    [...modalButtons].forEach((btn) => {
+        var targetModal = btn.getAttribute('data-target');
+
+        var favDialog = document.getElementById(targetModal);
+        var confirmBtn = favDialog.querySelector('.confirmBtn');
+        var closeModal = favDialog.querySelector('.closeModal');
+        var form = favDialog.querySelector('form');
+
+        // "Show the dialog" button opens the <dialog> modally
+        btn.addEventListener('click', () => {
+            favDialog.showModal();
+        });
+
+        closeModal.addEventListener('click', () => {
+            favDialog.close();
+        });
+
+        if (confirmBtn && form) {
+            confirmBtn.addEventListener('click', () => {
+                form.submit();
+            });
+        }
+    });
 </script>

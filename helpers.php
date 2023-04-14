@@ -29,6 +29,12 @@ function formatKeys(string $key): string
     return ucwords(str_ireplace('_', ' ', $key));
 }
 
+function inc(string $file_path, array $attrs): void
+{
+    extract($attrs);
+    include __DIR__ . "/src/Views/" . $file_path . ".php";
+}
+
 function dd($var)
 {
     var_dump($var);

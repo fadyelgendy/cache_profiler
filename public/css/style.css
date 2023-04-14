@@ -196,7 +196,7 @@ h5 {
     padding: 0.2rem;
 }
 
-.keys-container > div {
+.keys-container>div {
     border: 1px solid #b8b6b6;
     display: flex;
     align-items: center;
@@ -333,4 +333,52 @@ h5 {
 .success {
     background-color: #12a705 !important;
     color: #FFFFFF;
+}
+
+/* Modal */
+dialog {
+    width: 50%;
+    margin: auto;
+    border: 2px solid #DCDCDC;
+    border-radius: 5px;
+    box-shadow: 1px 3px 1px #000000;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+dialog form {
+    padding: 0px;
+}
+
+.modal-header {
+    border-bottom: 1px solid #DCDCDC;
+}
+
+.modal-body {
+    padding: 0.5rem;
+}
+
+.modal-buttons {
+    margin: 0px;
+    margin-top: 0.5rem;
+    border-top: 1px solid #DCDCDC;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.modal-buttons button {
+    display: inline-block;
+    width: auto;
+}
+
+.modal-body>.keys-container {
+    display: grid !important;
+    grid-template-columns: 1fr 2fr !important;
+    padding: 0.2rem;
 }

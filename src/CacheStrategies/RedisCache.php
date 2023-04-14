@@ -99,7 +99,7 @@ class RedisCache extends View implements CacheInterface
         return $this->render([
             'title' => CacheDriverEnum::REDIS->value,
             'data' => $data,
-            'keys' => $this->redis->keys('*'),
+            'keys' => $this->getStoredData(),
             'extra' => $extra
         ]);
     }
@@ -120,6 +120,23 @@ class RedisCache extends View implements CacheInterface
         $_SESSION[$result['status']] = $result['message'];
 
         $this->data($result);
+    }
+
+    protected function getStoredData(): array
+    {
+        $stored = [];
+
+        foreach ($this->redis->keys('*') as $key) {
+            $res = $this->redis->get($key);
+
+            if (!is_string($res)) {
+                $res = $this->redis->hGetAll($key);
+            }
+
+            $stored[$key] = $res;
+        }
+        
+        return $stored;
     }
 
     protected function handleStore(array $request): array
