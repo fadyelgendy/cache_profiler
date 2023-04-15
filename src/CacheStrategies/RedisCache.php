@@ -6,6 +6,7 @@ use Fadyandrawes\CacheProfiler\CacheStrategies\CacheInterface;
 use Fadyandrawes\CacheProfiler\Enums\CacheDriverEnum;
 use Fadyandrawes\CacheProfiler\Enums\DatatypeEnum;
 use Fadyandrawes\CacheProfiler\Enums\OSEnum;
+use Fadyandrawes\CacheProfiler\Enums\ResponseEnum;
 use Fadyandrawes\CacheProfiler\View;
 use Throwable;
 
@@ -24,7 +25,7 @@ class RedisCache extends View implements CacheInterface
     ) {
     }
 
-    public function handle(array $request)
+    public function handle(): array
     {
         try {
             $this->redis = new \Redis();
@@ -39,14 +40,45 @@ class RedisCache extends View implements CacheInterface
                 $this->options
             );
 
-            if (!empty($request) && $_SERVER['REQUEST_METHOD'] == 'POST') {
-                $this->handleRequest($request);
-            }
+            return [
+                'status' => ResponseEnum::SUCESS,
+                'message' => "Connetced!"
+            ];
         } catch (Throwable $ex) {
-            return "ERROR: " . $ex->getMessage() . ". Check your Redis server status!";
+            return [
+                'status' => ResponseEnum::FAILED,
+                'message' => "ERROR: " . $ex->getMessage()
+            ];
+        }
+    }
+
+    public function handleRequest(array $request): void
+    {
+        if (array_key_exists('form_type', $request)) {
+            if ($request['form_type'] === 'store') {
+                $result = $this->handleStore($request);
+            }
+
+            if ($request['form_type'] === 'destroy') {
+                $result = $this->handleDestroy($request);
+            }
+
+            if ($request['form_type'] === 'flush_current' || $request['form_type'] === 'flush_all') {
+                $result = $this->handleFlush($request);
+            }
+
+            if ($request['form_type'] === 'close_connection') {
+                $result = $this->HandleServerActions($request);
+            }
         }
 
-        return ($this->redis) ? $this->data() : "ERROR: Connection Failed!";
+        // Flash to sesion
+        $_SESSION[$result['status']] = $result['message'];
+
+        $driver = explode('=', $_SERVER['QUERY_STRING'])[1];
+
+        header("Location: handler.php?driver=". $driver);
+        exit;
     }
 
     public function data($extra = null)
@@ -102,32 +134,6 @@ class RedisCache extends View implements CacheInterface
             'keys' => $this->getStoredData(),
             'extra' => $extra
         ]);
-    }
-
-    public function handleRequest(array $request): void
-    {
-        if (array_key_exists('form_type', $request)) {
-            if ($request['form_type'] === 'store') {
-                $result = $this->handleStore($request);
-            }
-
-            if ($request['form_type'] === 'destroy') {
-                $result = $this->handleDestroy($request);
-            }
-
-            if ($request['form_type'] === 'flush_current' || $request['form_type'] === 'flush_all') {
-                $result = $this->handleFlush($request);
-            }
-
-            if ($request['form_type'] === 'close_connection') {
-                $result = $this->HandleServerActions($request);
-            }
-        }
-
-        // Flash to sesion
-        $_SESSION[$result['status']] = $result['message'];
-
-        $this->data($result);
     }
 
     protected function getStoredData(): array
