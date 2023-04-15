@@ -114,6 +114,14 @@ class RedisCache extends View implements CacheInterface
             if ($request['form_type'] === 'destroy') {
                 $result = $this->handleDestroy($request);
             }
+
+            if ($request['form_type'] === 'flush_current' || $request['form_type'] === 'flush_all') {
+                $result = $this->handleFlush($request);
+            }
+
+            if ($request['form_type'] === 'close_connection') {
+                $result = $this->HandleServerActions($request);
+            }
         }
 
         // Flash to sesion
@@ -202,5 +210,47 @@ class RedisCache extends View implements CacheInterface
             'status' => 'failed',
             'message' => 'No data sent in the request!'
         ];
+    }
+
+    protected function handleFlush(array $request): array
+    {
+        if (array_key_exists('form_type', $request)) {
+            if ($request['form_type'] === 'flush_current') {
+                $this->redis->flushDb();
+            }
+
+            if ($request['form_type'] === 'flush_all') {
+                $this->redis->flushAll();
+            }
+
+            return [
+                'status' => 'success',
+                'message' => 'Database Flushed!'
+            ];
+        } else {
+            return [
+                'status'=> 'failed',
+                'message' => 'Flush Type Required!'
+            ];
+        }
+    }
+
+    public function HandleServerActions(array $request): array
+    {
+        if (array_key_exists('form_type', $request)) {
+            if ($request['form_type'] === 'close_connection') {
+                $this->redis->close();
+            }
+
+            return [
+                'status' => 'success',
+                'message' => 'Connection Closed!'
+            ];
+        } else {
+            return [
+                'status'=> 'failed',
+                'message' => 'Missing Action Type!'
+            ];
+        }
     }
 }
