@@ -83,50 +83,7 @@ class RedisCache extends View implements CacheInterface
 
     public function data($extra = null)
     {
-        $info = $this->redis->info();
-
-        $os = OSEnum::LINUX->value;
-
-        if (str_starts_with($info['os'], 'WIN')) {
-            $os = OSEnum::WINDOWS;
-        }
-
-        if (str_starts_with($info['os'], 'darwin')) {
-            $os = OSEnum::OSX;
-        }
-
-        $data['server']['version'] = $info['redis_version'];
-        $data['server']['mode'] = $info['redis_mode'];
-        $data['server']['os'] = $os;
-        $data['server']['port'] = $info['tcp_port'];
-        $data['server']['uptime'] = formatTime($info['uptime_in_seconds']);
-        $data['server']['uptime_days'] = $info['uptime_in_days'];
-        $data['server']['clusters_enabled'] = $info['cluster_enabled'];
-        $data['server']['architecture'] = $info['arch_bits'];
-        $data['server']['gcc_version'] = $info['gcc_version'];
-        $data['server']['role'] = $info['role'];
-        $data['server']['slaves'] = $info['connected_slaves'];
-
-        $data['memory']['used'] = $info['used_memory_human'];
-        $data['memory']['rss'] = $info['used_memory_rss_human'];
-        $data['memory']['peak'] = $info['used_memory_peak_human'];
-        $data['memory']['overhead'] = $info['used_memory_overhead'];
-        $data['memory']['startup'] = $info['used_memory_startup'];
-        $data['memory']['system'] = $info['total_system_memory_human'];
-        $data['memory']['lua'] = $info['used_memory_lua_human'];
-        $data['memory']['scripts'] = $info['used_memory_scripts_human'];
-        $data['memory']['max'] = $info['maxmemory_human'];
-        $data['memory']['policy'] = $info['maxmemory_policy'];
-
-        $data['cpu']['sys'] = $info['used_cpu_sys'];
-        $data['cpu']['sys_children'] = $info['used_cpu_sys_children'];
-        $data['cpu']['user'] = $info['used_cpu_user'];
-        $data['cpu']['user_children'] = $info['used_cpu_user_children'];
-
-        $data['databases'][] = $info['db0'];
-
-        $data['configuration']['bin'] = $info['executable'];
-        $data['configuration']['config'] = $info['config_file'];
+        $data['server'] = $this->redis->info();
 
         return $this->render([
             'title' => CacheDriverEnum::REDIS->value,

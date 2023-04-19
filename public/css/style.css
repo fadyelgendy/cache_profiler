@@ -130,16 +130,12 @@ h4 {
     text-transform: uppercase;
     width: 100%;
     padding: 5px 10px;
-    background-color: #FFFFFF;
-    color: #dd392b;
 }
 
 h5 {
     text-transform: uppercase;
     width: 100%;
     padding: 5px 10px;
-    background-color: #dd392b;
-    color: #FFFFFF;
 }
 
 .error {
@@ -266,10 +262,6 @@ h5 {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 0.4rem;
-}
-
-.console-container>div {
-    border: 1px solid #dd392b;
 }
 
 .alert {

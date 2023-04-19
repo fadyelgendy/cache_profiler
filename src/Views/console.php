@@ -1,6 +1,6 @@
 <div class="console-container">
     <div>
-        <h5>add new:</h5>
+        <h5 class="<?= $title; ?>">add new:</h5>
         <?php
         include __DIR__ . "/inc/alerts.php";
         include __DIR__ . "/add.php";
@@ -8,7 +8,7 @@
     </div>
 
     <div>
-        <h5>available keys:</h5>
+        <h5 class="<?= strtolower($title); ?>">available keys:</h5>
 
         <?php foreach ($keys as $key => $value) : ?>
             <div class="keys-container">

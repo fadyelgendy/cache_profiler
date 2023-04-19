@@ -6,9 +6,7 @@
         <label for="driver">driver</label>
 
         <div>
-            <?php if ($_SESSION['driver']) : ?>
-                <div class="alert alert-error"><?= $_SESSION['driver']; ?></div>
-            <?php endif; ?>
+            
 
             <select name="driver" id="driver">
                 <option value="">select driver</option>
@@ -24,7 +22,7 @@
     <div class="form-group">
         <label for="host">Host</label>
         <div>
-            <input type="text" name="host" id="host" placeholder="127.0.01">
+            <input type="text" name="host" id="host" value="<?= \Fadyandrawes\CacheProfiler\Enums\CacheDriverEnum::getHost($title); ?>">
             <?php if ($_SESSION['host']) : ?>
                 <div class="error"><?= $_SESSION['host']; ?></div>
             <?php endif; ?>
@@ -34,7 +32,7 @@
     <div class="form-group">
         <label for="port">port</label>
         <div>
-            <input type="text" name="port" id="port" placeholder="6379">
+            <input type="text" name="port" id="port" value="<?= \Fadyandrawes\CacheProfiler\Enums\CacheDriverEnum::getPort($title); ?>">
             <?php if ($_SESSION['port']) : ?>
                 <div class="error"><?= $_SESSION['port']; ?></div>
             <?php endif; ?>
