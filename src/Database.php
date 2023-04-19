@@ -10,17 +10,28 @@ use Throwable;
 class Database
 {
     private PDO $pdo;
+    private const DB_DRIVER_PATH = "Fadyandrawes\\CacheProfiler\\DatabaseStrategies\\";
+    private static $instance;
 
-    public function __construct(protected string $driver, protected string $db_name)
+    private function __construct(protected string $driver, protected string $db_name)
     {
         $databaseContext = new DatabaseContext();
-        $targetClass = "Fadyandrawes\\CacheProfiler\\DatabaseStrategies\\" .ucwords($driver);
+        $targetClass = self::DB_DRIVER_PATH . ucwords($driver);
 
-        if (! class_exists($targetClass)) {
+        if (!class_exists($targetClass)) {
             die("ERROR: Database driver doesn't exist!");
         }
 
         $this->pdo = $databaseContext->setStrategy(new $targetClass)->executeStratgy($db_name);
+    }
+
+    public static function getInstance(string $driver, string $db_name): self
+    {
+        if (Database::$instance == null) {
+            Database::$instance = new Database($driver, $db_name);
+        }
+
+        return Database::$instance;
     }
 
     public function get(string $driver): bool|PDORow

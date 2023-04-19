@@ -32,7 +32,8 @@ if (empty($port) || !isset($port)) {
 }
 
 // store data
-$db = new Database(env('db_driver'), env('db_name'));
+$db = Database::getInstance(env('db_driver'), env('db_name'));
+
 $data = [
     'driver' => trim($driver),
     'host' => trim($host),

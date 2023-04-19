@@ -11,7 +11,7 @@ use Fadyandrawes\CacheProfiler\Database;
 define('CACHE_DRIVER_PATH', "Fadyandrawes\\CacheProfiler\\CacheStrategies\\");
 
 // check for database first
-$db = new Database(env('db_driver'), env('db_name'));
+$db = Database::getInstance(env('db_driver'), env('db_name'));
 
 $title = $_GET['driver'];
 
